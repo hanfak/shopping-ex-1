@@ -1,18 +1,19 @@
 package acceptancetests;
 
 import com.hanfak.HanBasket;
+import com.hanfak.ItemPricesRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class CalculateBasketTotalNoOffers {
 
   private double actualTotal;
-  private final HanBasket basket = new HanBasket();
+  private final ItemPricesRepositoryStub repository = new ItemPricesRepositoryStub();
+  private final HanBasket basket = new HanBasket(repository);
 
   @Test
   void listOfUniqueItems() {

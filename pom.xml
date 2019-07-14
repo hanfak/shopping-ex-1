@@ -22,6 +22,7 @@
         <yatspec.version>1.22</yatspec.version>
         <junit.platform.version>1.0.3</junit.platform.version>
         <assertj-core.version>3.12.2</assertj-core.version>
+        <mockito-all.version>1.9.5</mockito-all.version>
     </properties>
 
     <build>
@@ -254,6 +255,14 @@
             <version>${yatspec.version}</version>
             <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>${mockito-all.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <repositories>

@@ -10,10 +10,10 @@ import java.util.Arrays;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class HanBasketTest {
-
-  private final HanBasket basket = new HanBasket();
 
   @Test
   void totalIs0WhenBasketIsEmpty() {
@@ -26,12 +26,18 @@ class HanBasketTest {
           "Banana, 0.20",
           "Melon, 0.50"
   })
-  void totalOfBasketWithOneItem(String item, double total) {
-    assertThat(basket.total(singletonList(item))).isEqualTo(total);
+  void totalOfBasketWithOneItem(String item, double value) {
+    when(repository.findPrice(item)).thenReturn(value);
+    assertThat(basket.total(singletonList(item))).isEqualTo(value);
   }
 
   @Test
   void totalOfBasketWithMultipleItems() {
+    when(repository.findPrice("Apple")).thenReturn(0.35);
+    when(repository.findPrice("Banana")).thenReturn(0.20);
     assertThat(basket.total(Arrays.asList("Apple", "Banana"))).isEqualTo(0.55);
   }
+
+  private final ItemPricesRepository repository =  mock(ItemPricesRepository.class);
+  private final HanBasket basket = new HanBasket(repository);
 }
