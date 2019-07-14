@@ -15,7 +15,7 @@ public class HanBasket {
 
   public Double total(List<String> basketItems) {
     return basketItems.stream()
-            .map(ITEM_PRICES::get)
-            .reduce(0.0, Double::sum);
+            .mapToDouble(ITEM_PRICES::get)
+            .sum();
   }
 }
