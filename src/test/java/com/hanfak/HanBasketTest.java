@@ -17,7 +17,7 @@ class HanBasketTest {
 
   @Test
   void totalIs0WhenBasketIsEmpty() {
-    assertThat(basket.total(emptyList())).isEqualTo(0.0);
+    assertThat(basket.total(emptyList()).doubleValue()).isEqualTo(0.0);
   }
 
   @ParameterizedTest
@@ -28,14 +28,22 @@ class HanBasketTest {
   })
   void totalOfBasketWithOneItem(String item, double value) {
     when(repository.findPrice(item)).thenReturn(value);
-    assertThat(basket.total(singletonList(item))).isEqualTo(value);
+    assertThat(basket.total(singletonList(item)).doubleValue()).isEqualTo(value);
   }
 
   @Test
   void totalOfBasketWithMultipleItems() {
     when(repository.findPrice("Apple")).thenReturn(0.35);
     when(repository.findPrice("Banana")).thenReturn(0.20);
-    assertThat(basket.total(Arrays.asList("Apple", "Banana"))).isEqualTo(0.55);
+    assertThat(basket.total(Arrays.asList("Apple", "Banana")).doubleValue()).isEqualTo(0.55);
+  }
+
+  @Test
+  void totalOfBasketWithMultipleAndDuplicateItems() {
+    when(repository.findPrice("Apple")).thenReturn(0.35).thenReturn(0.35);
+    when(repository.findPrice("Banana")).thenReturn(0.20);
+    assertThat(basket.total(Arrays.asList("Apple", "Apple", "Banana")).doubleValue())
+            .isEqualTo(0.90);
   }
 
   private final ItemPricesRepository repository =  mock(ItemPricesRepository.class);

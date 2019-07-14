@@ -1,17 +1,17 @@
 package acceptancetests;
 
 import com.hanfak.HanBasket;
-import com.hanfak.ItemPricesRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class CalculateBasketTotalNoOffers {
 
-  private double actualTotal;
+  private BigDecimal actualTotal;
   private final ItemPricesRepositoryStub repository = new ItemPricesRepositoryStub();
   private final HanBasket basket = new HanBasket(repository);
 
@@ -28,6 +28,6 @@ public class CalculateBasketTotalNoOffers {
   }
 
   private void thenTheTotalOfTheBasketIs(double total) {
-    Assertions.assertThat(actualTotal).isEqualTo(total);
+    Assertions.assertThat(actualTotal.doubleValue()).isEqualTo(total);
   }
 }
