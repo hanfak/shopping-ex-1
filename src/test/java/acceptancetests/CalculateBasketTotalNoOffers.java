@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CalculateBasketTotalNoOffers {
+class CalculateBasketTotalNoOffers {
 
   @Nested
   class NoDiscounts {
@@ -22,7 +22,6 @@ public class CalculateBasketTotalNoOffers {
       thenTheTotalOfTheBasketIs(1.05);
     }
   }
-
 
   @Nested
   class Discounts {

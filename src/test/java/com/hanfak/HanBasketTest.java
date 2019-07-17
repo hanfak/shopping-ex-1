@@ -40,11 +40,19 @@ class HanBasketTest {
 
   @Test
   void totalOfBasketWithMultipleAndDuplicateItems() {
-    when(repository.findPrice("Apple")).thenReturn(0.35).thenReturn(0.35);
+    when(repository.findPrice("Apple")).thenReturn(0.35);
     when(repository.findPrice("Banana")).thenReturn(0.20);
     assertThat(basket.total(Arrays.asList("Apple", "Apple", "Banana")).doubleValue())
             .isEqualTo(0.90);
   }
+
+  @Test
+  void totalOfBasketWithMultipleMelons() {
+    when(repository.findPrice("Melon")).thenReturn(0.50);
+    assertThat(basket.total(Arrays.asList("Melon", "Melon", "Melon", "Melon", "Melon")).doubleValue())
+            .isEqualTo(1.5);
+  }
+
 
   private final ItemPricesRepository repository =  mock(ItemPricesRepository.class);
   private final HanBasket basket = new HanBasket(repository);
