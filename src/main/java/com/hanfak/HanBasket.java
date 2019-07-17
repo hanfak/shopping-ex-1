@@ -18,8 +18,9 @@ public class HanBasket {
 
     double subTotalForMelons = numberOfMelonsToPayFor(basketItems) * repository.findPrice("Melon");
 
+    // TODO remove call to discounted items, extract repository of discounted items
     BigDecimal price = basketItems.stream()
-            .filter(item -> !item.equals("Melon"))
+            .filter(item -> !"Melon".equals(item))
             .mapToDouble(repository::findPrice)
             .mapToObj(BigDecimal::new)
             .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -28,13 +29,16 @@ public class HanBasket {
             .add(BigDecimal.valueOf(subTotalForMelons));
   }
 
+
+  // TODO: Extract out a rules engine, to calculate price for discounted offers
   private int numberOfMelonsToPayFor(List<String> items) {
     return (int) Math.ceil(numberOfMelons(items) / 2.0);
   }
 
+  @SuppressWarnings("Convert2MethodRef") // Easier to read
   private int numberOfMelons(List<String> basketItems) {
     return basketItems.stream()
-            .collect(partitioningBy(item -> item.equals("Melon")))
+            .collect(partitioningBy(item -> "Melon".equals(item)))
             .get(true)
             .size();
   }
