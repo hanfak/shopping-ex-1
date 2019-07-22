@@ -9,28 +9,38 @@ import static java.util.stream.Collectors.partitioningBy;
 public class HanBasket {
 
   private final ItemPricesRepository repository;
+  private final DiscountedItemsRepository discountedItemsRepository;
 
-  public HanBasket(ItemPricesRepository repository) {
+  public HanBasket(ItemPricesRepository repository, DiscountedItemsRepository discountedItemsRepository) {
     this.repository = repository;
+    this.discountedItemsRepository = discountedItemsRepository;
   }
 
   public BigDecimal total(List<String> basketItems) {
+    List<String> discountedItems = discountedItemsRepository.findAll();
+    BigDecimal price = priceOfAllNonDiscountedItems(basketItems, discountedItems);
 
-    double subTotalForMelons = numberOfMelonsToPayFor(basketItems) * repository.findPrice("Melon");
-    BigDecimal subTotalForLimes = BigDecimal.valueOf(numberOfLimesToPayFor(basketItems)).multiply(BigDecimal.valueOf(repository.findPrice("Lime")));
+    return price.setScale(2, HALF_EVEN)
+            .add(subTotalForMelons(basketItems))
+            .add(subtotalForLimes(basketItems));
+  }
 
+  private BigDecimal subtotalForLimes(List<String> basketItems) {
+    return BigDecimal.valueOf(numberOfLimesToPayFor(basketItems))
+            .multiply(BigDecimal.valueOf(repository.findPrice("Lime")));
+  }
 
-    // TODO remove call to discounted items, extract repository of discounted items
-    BigDecimal price = basketItems.stream()
-            .filter(item -> !"Melon".equals(item))
-            .filter(item -> !"Lime".equals(item))
+  private BigDecimal subTotalForMelons(List<String> basketItems) {
+    return BigDecimal.valueOf(numberOfMelonsToPayFor(basketItems))
+            .multiply(BigDecimal.valueOf(repository.findPrice("Melon")));
+  }
+
+  private BigDecimal priceOfAllNonDiscountedItems(List<String> basketItems, List<String> discountedItems) {
+    return basketItems.stream()
+            .filter(item -> !discountedItems.contains(item))
             .mapToDouble(repository::findPrice)
             .mapToObj(BigDecimal::new)
             .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-    return price.setScale(2, HALF_EVEN)
-            .add(BigDecimal.valueOf(subTotalForMelons))
-            .add(subTotalForLimes);
   }
 
   private double numberOfLimesToPayFor(List<String> basketItems) {

@@ -1,11 +1,11 @@
 package com.hanfak;
 
 
+import acceptancetests.DiscountedItemsRepositoryStub;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -73,7 +73,7 @@ class HanBasketTest {
             .isEqualTo(0.90);
   }
 
-
   private final ItemPricesRepository repository =  mock(ItemPricesRepository.class);
-  private final HanBasket basket = new HanBasket(repository);
+  private final DiscountedItemsRepository discountedItemsRepository = new DiscountedItemsRepositoryStub();;
+  private final HanBasket basket = new HanBasket(repository, discountedItemsRepository);
 }
