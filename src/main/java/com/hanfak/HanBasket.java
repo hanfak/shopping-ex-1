@@ -34,14 +34,11 @@ public class HanBasket {
   }
 
   private double numberOfLimesToPayFor(List<String> basketItems) {
-    List<String> limes = basketItems.stream().filter(("Lime")::equals).collect(Collectors.toList());
-    if (limes.size() %  3 == 0) {
-      double numberOf3LotsOfLimes = limes.size() / 3.0;
-      return numberOf3LotsOfLimes * 2;
-    }
-    return limes.size() * 1.0;
+    long numberOfLimes = basketItems.stream().filter("Lime"::equals).count();
+    double numberOf3LotsOfLimes = Math.floor(numberOfLimes / 3.0);
+    double leftOver = numberOfLimes % 3;
+    return numberOf3LotsOfLimes * 2 + leftOver;
   }
-
 
   // TODO: Extract out a rules engine, to calculate price for discounted offers
   private int numberOfMelonsToPayFor(List<String> items) {

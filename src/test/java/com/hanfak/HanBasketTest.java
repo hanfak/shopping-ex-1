@@ -54,6 +54,20 @@ class HanBasketTest {
             .isEqualTo(1.5);
   }
 
+  @Test
+  void totalOfBasketWithMultipleLimes() {
+    when(repository.findPrice("Lime")).thenReturn(0.15);
+    assertThat(basket.total(Arrays.asList("Lime", "Lime", "Lime", "Lime", "Lime")).doubleValue())
+            .isEqualTo(0.6);
+  }
+
+//  @Test
+//  void totalOfBasketWithMultipleLimes2() {
+//    when(repository.findPrice("Lime")).thenReturn(0.15);
+//    assertThat(basket.total(Arrays.asList("Lime", "Lime", "Lime", "Lime", "Lime", "Lime")).doubleValue())
+//            .isEqualTo(0.6);
+//  }
+
 
   private final ItemPricesRepository repository =  mock(ItemPricesRepository.class);
   private final HanBasket basket = new HanBasket(repository);
