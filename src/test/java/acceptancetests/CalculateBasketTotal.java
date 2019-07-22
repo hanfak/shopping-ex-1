@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-class CalculateBasketTotalNoOffers {
+class CalculateBasketTotal {
 
   @Nested
   class NoDiscounts {
@@ -32,12 +32,19 @@ class CalculateBasketTotalNoOffers {
 
       thenTheTotalOfTheBasketIs(0.70);
     }
+
+    @Test
+    void threeForPriceOfTwoForLimes() {
+      whenProcessingTheFollowingItems("Lime", "Banana", "Lime", "Apple", "Lime");
+
+      thenTheTotalOfTheBasketIs(0.85);
+    }
   }
 
 
   private void whenProcessingTheFollowingItems(String... fruits) {
     List<String> basketItems = new ArrayList<>(Arrays.asList(fruits));
-    actualTotal= basket.total(basketItems);
+    actualTotal = basket.total(basketItems);
   }
 
   private void thenTheTotalOfTheBasketIs(double total) {

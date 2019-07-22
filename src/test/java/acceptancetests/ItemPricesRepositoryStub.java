@@ -12,6 +12,7 @@ public class ItemPricesRepositoryStub implements ItemPricesRepository {
     ITEM_PRICES.put("Apple", 0.35);
     ITEM_PRICES.put("Banana", 0.20);
     ITEM_PRICES.put("Melon", 0.50);
+    ITEM_PRICES.put("Lime", 0.15);
   }
 
   @Override

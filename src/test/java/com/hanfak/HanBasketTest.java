@@ -24,7 +24,8 @@ class HanBasketTest {
   @CsvSource({
           "Apple, 0.35",
           "Banana, 0.20",
-          "Melon, 0.50"
+          "Melon, 0.50",
+          "Lime, 0.15"
   })
   void totalOfBasketWithOneItem(String item, double value) {
     when(repository.findPrice(item)).thenReturn(value);

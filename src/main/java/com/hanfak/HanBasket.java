@@ -2,6 +2,7 @@ package com.hanfak;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.math.RoundingMode.HALF_EVEN;
 import static java.util.stream.Collectors.partitioningBy;
@@ -17,16 +18,28 @@ public class HanBasket {
   public BigDecimal total(List<String> basketItems) {
 
     double subTotalForMelons = numberOfMelonsToPayFor(basketItems) * repository.findPrice("Melon");
+    double subTotalForLimes = numberOfLimesToPayFor(basketItems) * repository.findPrice("Lime");
 
     // TODO remove call to discounted items, extract repository of discounted items
     BigDecimal price = basketItems.stream()
             .filter(item -> !"Melon".equals(item))
+            .filter(item -> !"Lime".equals(item))
             .mapToDouble(repository::findPrice)
             .mapToObj(BigDecimal::new)
             .reduce(BigDecimal.ZERO, BigDecimal::add);
 
     return price.setScale(2, HALF_EVEN)
-            .add(BigDecimal.valueOf(subTotalForMelons));
+            .add(BigDecimal.valueOf(subTotalForMelons))
+            .add(BigDecimal.valueOf(subTotalForLimes));
+  }
+
+  private double numberOfLimesToPayFor(List<String> basketItems) {
+    List<String> limes = basketItems.stream().filter(("Lime")::equals).collect(Collectors.toList());
+    if (limes.size() %  3 == 0) {
+      double numberOf3LotsOfLimes = limes.size() / 3.0;
+      return numberOf3LotsOfLimes * 2;
+    }
+    return limes.size() * 1.0;
   }
 
 
