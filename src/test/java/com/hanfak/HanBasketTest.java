@@ -2,10 +2,15 @@ package com.hanfak;
 
 
 import acceptancetests.DiscountedItemsRepositoryStub;
+import acceptancetests.ItemPricesRepositoryStub;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -19,61 +24,57 @@ class HanBasketTest {
 
   @Test
   void totalIs0WhenBasketIsEmpty() {
+    when(discountRulesEngine.calculatePriceOfDiscountedItems(emptyList(), repository))
+            .thenReturn(BigDecimal.ZERO);
     assertThat(basket.total(emptyList()).doubleValue()).isEqualTo(0.0);
   }
 
+  // TODO remove??
   @ParameterizedTest
   @CsvSource({
           "Apple, 0.35",
-          "Banana, 0.20",
-          "Melon, 0.50",
-          "Lime, 0.15"
+          "Banana, 0.20"
   })
   void totalOfBasketWithOneItem(String item, double value) {
-    when(repository.findPrice(item)).thenReturn(value);
+    when(discountRulesEngine.calculatePriceOfDiscountedItems(singletonList(item), repository))
+            .thenReturn(BigDecimal.ZERO);
+
     assertThat(basket.total(singletonList(item)).doubleValue()).isEqualTo(value);
   }
 
   @Test
+  void totalOfBasketWithOneLime() {
+    when(discountRulesEngine.calculatePriceOfDiscountedItems(singletonList("Lime"), repository))
+            .thenReturn(BigDecimal.valueOf(0.15));
+
+    assertThat(basket.total(singletonList("Lime")).doubleValue()).isEqualTo(0.15);
+  }
+
+  @Test
+  void totalOfBasketWithOneMelon() {
+    when(discountRulesEngine.calculatePriceOfDiscountedItems(singletonList("Melon"), repository))
+            .thenReturn(BigDecimal.valueOf(0.50));
+
+    assertThat(basket.total(singletonList("Melon")).doubleValue()).isEqualTo(0.50);
+  }
+
+  @Test
   void totalOfBasketWithMultipleItems() {
-    when(repository.findPrice("Apple")).thenReturn(0.35);
-    when(repository.findPrice("Banana")).thenReturn(0.20);
+    when(discountRulesEngine.calculatePriceOfDiscountedItems(Arrays.asList("Apple", "Banana"), repository))
+            .thenReturn(BigDecimal.ZERO);
     assertThat(basket.total(asList("Apple", "Banana")).doubleValue()).isEqualTo(0.55);
   }
 
   @Test
   void totalOfBasketWithMultipleAndDuplicateItems() {
-    when(repository.findPrice("Apple")).thenReturn(0.35);
-    when(repository.findPrice("Banana")).thenReturn(0.20);
+    when(discountRulesEngine.calculatePriceOfDiscountedItems(Arrays.asList("Apple", "Apple", "Banana"), repository))
+            .thenReturn(BigDecimal.ZERO);
     assertThat(basket.total(asList("Apple", "Apple", "Banana")).doubleValue())
             .isEqualTo(0.90);
   }
 
-  @Test
-  void totalOfBasketWithMultipleMelons() {
-    when(repository.findPrice("Melon")).thenReturn(0.50);
-    assertThat(basket.total(asList("Melon", "Melon", "Melon", "Melon", "Melon")).doubleValue())
-            .isEqualTo(1.5);
-  }
-
-  @Test
-  void totalOfBasketWithMultipleLimes() {
-    when(repository.findPrice("Lime")).thenReturn(0.15);
-    assertThat(basket.total(asList("Lime", "Lime", "Lime", "Lime", "Lime")).doubleValue())
-            .isEqualTo(0.60);
-  }
-
-  @Test
-  void totalOfBasketWithMultipleLimes2() {
-    when(repository.findPrice("Lime")).thenReturn(0.15);
-    List<String> basketItems = asList("Lime", "Lime", "Lime",
-            "Lime", "Lime", "Lime",
-            "Lime", "Lime", "Lime");
-    assertThat(basket.total(basketItems).doubleValue())
-            .isEqualTo(0.90);
-  }
-
-  private final ItemPricesRepository repository =  mock(ItemPricesRepository.class);
-  private final DiscountedItemsRepository discountedItemsRepository = new DiscountedItemsRepositoryStub();;
-  private final HanBasket basket = new HanBasket(repository, discountedItemsRepository);
+  private final ItemPricesRepository repository = new ItemPricesRepositoryStub();
+  private final DiscountedItemsRepository discountedItemsRepository = new DiscountedItemsRepositoryStub();
+  private final DiscountRulesEngine discountRulesEngine = mock(DiscountRulesEngine.class);
+  private final HanBasket basket = new HanBasket(repository, discountedItemsRepository, discountRulesEngine);
 }

@@ -1,7 +1,9 @@
 package acceptancetests;
 
+import com.hanfak.DiscountRulesEngine;
 import com.hanfak.DiscountedItemsRepository;
 import com.hanfak.HanBasket;
+import com.hanfak.HansDiscountRulesEngine;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Nested;
@@ -55,5 +57,6 @@ class CalculateBasketTotal {
   private BigDecimal actualTotal;
   private final ItemPricesRepositoryStub repository = new ItemPricesRepositoryStub();
   private final DiscountedItemsRepository discountedItemsRepository = new DiscountedItemsRepositoryStub();
-  private final HanBasket basket = new HanBasket(repository, discountedItemsRepository);
+  private final DiscountRulesEngine discountRulesEngine = new HansDiscountRulesEngine();
+  private final HanBasket basket = new HanBasket(repository, discountedItemsRepository, discountRulesEngine);
 }
