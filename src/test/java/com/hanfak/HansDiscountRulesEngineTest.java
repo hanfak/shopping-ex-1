@@ -1,5 +1,6 @@
 package com.hanfak;
 
+import acceptancetests.DiscountedItemsRepositoryStub;
 import acceptancetests.ItemPricesRepositoryStub;
 import org.junit.jupiter.api.Test;
 
@@ -35,5 +36,6 @@ class HansDiscountRulesEngineTest {
   }
 
   private final ItemPricesRepository itemRepository = new ItemPricesRepositoryStub();
-  private final DiscountRulesEngine discountRulesEngine = new HansDiscountRulesEngine();
+  private final DiscountedItemsRepository discountedItemsRepository = new DiscountedItemsRepositoryStub();
+  private final DiscountRulesEngine discountRulesEngine = new HansDiscountRulesEngine(discountedItemsRepository);
 }

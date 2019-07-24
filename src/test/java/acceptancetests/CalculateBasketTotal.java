@@ -57,6 +57,6 @@ class CalculateBasketTotal {
   private BigDecimal actualTotal;
   private final ItemPricesRepositoryStub repository = new ItemPricesRepositoryStub();
   private final DiscountedItemsRepository discountedItemsRepository = new DiscountedItemsRepositoryStub();
-  private final DiscountRulesEngine discountRulesEngine = new HansDiscountRulesEngine();
+  private final DiscountRulesEngine discountRulesEngine = new HansDiscountRulesEngine(discountedItemsRepository);
   private final HanBasket basket = new HanBasket(repository, discountedItemsRepository, discountRulesEngine);
 }
