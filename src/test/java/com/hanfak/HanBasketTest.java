@@ -36,7 +36,7 @@ class HanBasketTest {
           "Banana, 0.20"
   })
   void totalOfBasketWithOneItem(String item, double value) {
-    when(discountRulesEngine.calculatePriceOfDiscountedItems(singletonList(item)))
+    when(discountRulesEngine.calculatePriceOfDiscountedItems(emptyList()))
             .thenReturn(BigDecimal.ZERO);
 
     assertThat(basket.total(singletonList(item)).doubleValue()).isEqualTo(value);
@@ -60,14 +60,14 @@ class HanBasketTest {
 
   @Test
   void totalOfBasketWithMultipleItems() {
-    when(discountRulesEngine.calculatePriceOfDiscountedItems(Arrays.asList("Apple", "Banana")))
+    when(discountRulesEngine.calculatePriceOfDiscountedItems(emptyList()))
             .thenReturn(BigDecimal.ZERO);
     assertThat(basket.total(asList("Apple", "Banana")).doubleValue()).isEqualTo(0.55);
   }
 
   @Test
   void totalOfBasketWithMultipleAndDuplicateItems() {
-    when(discountRulesEngine.calculatePriceOfDiscountedItems(Arrays.asList("Apple", "Apple", "Banana")))
+    when(discountRulesEngine.calculatePriceOfDiscountedItems(emptyList()))
             .thenReturn(BigDecimal.ZERO);
     assertThat(basket.total(asList("Apple", "Apple", "Banana")).doubleValue())
             .isEqualTo(0.90);
