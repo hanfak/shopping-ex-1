@@ -1,6 +1,7 @@
 package com.hanfak;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 
 public class HansDiscountRulesEngine implements DiscountRulesEngine {
@@ -16,19 +17,13 @@ public class HansDiscountRulesEngine implements DiscountRulesEngine {
   @Override
   public BigDecimal calculatePriceOfDiscountedItems(List<String> basketItems) {
     // create map of item to number, go through each item, find subtotal for that item, add all prices
-    // TODO no calls to individual items
-    return subtotalForLimes(basketItems).add(
-            subTotalForMelons(basketItems)
-    );
+   return discountedItemsRepository.findAll().stream()
+           .map(item -> calculateDiscountedTotalForItem(basketItems, item))
+           .reduce(BigDecimal.ZERO, BigDecimal::add);
   }
 
-  private BigDecimal subtotalForLimes(List<String> basketItems) {
-    DiscountType limeDiscountType = discountedItemsRepository.findDiscountForItem("Lime");
-    return limeDiscountType.calculateTotal(itemPricesRepository.findPrice("Lime"), basketItems);
-  }
-
-  private BigDecimal subTotalForMelons(List<String> basketItems) {
-    DiscountType melonDiscountType = discountedItemsRepository.findDiscountForItem("Melon");
-    return melonDiscountType.calculateTotal(itemPricesRepository.findPrice("Melon"), basketItems);
+  private BigDecimal calculateDiscountedTotalForItem(List<String> basketItems, String item) {
+    DiscountType discountForItem = discountedItemsRepository.findDiscountForItem(item);
+    return discountForItem.calculateTotal(itemPricesRepository.findPrice(item), basketItems);
   }
 }

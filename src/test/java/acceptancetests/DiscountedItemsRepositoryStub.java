@@ -18,7 +18,6 @@ public class DiscountedItemsRepositoryStub implements DiscountedItemsRepository 
   static {
     ITEM_PRICES.put("Melon", DISCOUNT_1);
     ITEM_PRICES.put("Lime", DISCOUNT_2);
-    ITEM_PRICES.put("Blah", DISCOUNT_1);
   }
 
   @Override
