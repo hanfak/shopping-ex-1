@@ -20,7 +20,8 @@ public class HanBasket {
   public BigDecimal total(List<String> basketItems) {
     List<String> discountedItems = discountedItemsRepository.findAll();
     BigDecimal nonDiscountedItemsTotal = priceOfAllNonDiscountedItems(basketItems, discountedItems);
-    BigDecimal discountedItemsTotal = discountRulesEngine.calculatePriceOfDiscountedItems(basketItems, itemRepository);
+    // pass in only items to discount
+    BigDecimal discountedItemsTotal = discountRulesEngine.calculatePriceOfDiscountedItems(basketItems);
 
     return nonDiscountedItemsTotal.setScale(2, HALF_EVEN)
             .add(discountedItemsTotal);

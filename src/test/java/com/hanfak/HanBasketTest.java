@@ -24,7 +24,7 @@ class HanBasketTest {
 
   @Test
   void totalIs0WhenBasketIsEmpty() {
-    when(discountRulesEngine.calculatePriceOfDiscountedItems(emptyList(), repository))
+    when(discountRulesEngine.calculatePriceOfDiscountedItems(emptyList()))
             .thenReturn(BigDecimal.ZERO);
     assertThat(basket.total(emptyList()).doubleValue()).isEqualTo(0.0);
   }
@@ -36,7 +36,7 @@ class HanBasketTest {
           "Banana, 0.20"
   })
   void totalOfBasketWithOneItem(String item, double value) {
-    when(discountRulesEngine.calculatePriceOfDiscountedItems(singletonList(item), repository))
+    when(discountRulesEngine.calculatePriceOfDiscountedItems(singletonList(item)))
             .thenReturn(BigDecimal.ZERO);
 
     assertThat(basket.total(singletonList(item)).doubleValue()).isEqualTo(value);
@@ -44,7 +44,7 @@ class HanBasketTest {
 
   @Test
   void totalOfBasketWithOneLime() {
-    when(discountRulesEngine.calculatePriceOfDiscountedItems(singletonList("Lime"), repository))
+    when(discountRulesEngine.calculatePriceOfDiscountedItems(singletonList("Lime")))
             .thenReturn(BigDecimal.valueOf(0.15));
 
     assertThat(basket.total(singletonList("Lime")).doubleValue()).isEqualTo(0.15);
@@ -52,7 +52,7 @@ class HanBasketTest {
 
   @Test
   void totalOfBasketWithOneMelon() {
-    when(discountRulesEngine.calculatePriceOfDiscountedItems(singletonList("Melon"), repository))
+    when(discountRulesEngine.calculatePriceOfDiscountedItems(singletonList("Melon")))
             .thenReturn(BigDecimal.valueOf(0.50));
 
     assertThat(basket.total(singletonList("Melon")).doubleValue()).isEqualTo(0.50);
@@ -60,14 +60,14 @@ class HanBasketTest {
 
   @Test
   void totalOfBasketWithMultipleItems() {
-    when(discountRulesEngine.calculatePriceOfDiscountedItems(Arrays.asList("Apple", "Banana"), repository))
+    when(discountRulesEngine.calculatePriceOfDiscountedItems(Arrays.asList("Apple", "Banana")))
             .thenReturn(BigDecimal.ZERO);
     assertThat(basket.total(asList("Apple", "Banana")).doubleValue()).isEqualTo(0.55);
   }
 
   @Test
   void totalOfBasketWithMultipleAndDuplicateItems() {
-    when(discountRulesEngine.calculatePriceOfDiscountedItems(Arrays.asList("Apple", "Apple", "Banana"), repository))
+    when(discountRulesEngine.calculatePriceOfDiscountedItems(Arrays.asList("Apple", "Apple", "Banana")))
             .thenReturn(BigDecimal.ZERO);
     assertThat(basket.total(asList("Apple", "Apple", "Banana")).doubleValue())
             .isEqualTo(0.90);

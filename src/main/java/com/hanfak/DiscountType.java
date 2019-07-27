@@ -33,17 +33,18 @@ public enum DiscountType {
   }
 
   @SuppressWarnings("Convert2MethodRef") // Easier to read
-  private static int numberOfMelons(List<String> basketItems) {
-    return basketItems.stream()
-            .collect(partitioningBy(item -> "Melon".equals(item)))
-            .get(true)
-            .size();
+  private static long numberOfMelons(List<String> basketItems) {
+    return getNumberOfItems(basketItems, "Melon");
   }
 
   private static double numberOfLimesToPayFor(List<String> basketItems) {
-    long numberOfLimes = basketItems.stream().filter("Lime"::equals).count();
+    long numberOfLimes = getNumberOfItems(basketItems, "Lime");
     double numberOf3LotsOfLimes = Math.floor(numberOfLimes / 3.0);
     double leftOver = numberOfLimes % 3;
     return numberOf3LotsOfLimes * 2 + leftOver;
+  }
+
+  private static long getNumberOfItems(List<String> basketItems, String melon) {
+    return basketItems.stream().filter(melon::equals).count();
   }
 }

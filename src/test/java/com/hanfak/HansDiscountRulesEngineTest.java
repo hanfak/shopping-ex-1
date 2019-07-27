@@ -15,14 +15,14 @@ class HansDiscountRulesEngineTest {
   @Test
   void subtotalOfBasketWithMultipleMelons() {
     List<String> basketItems = asList("Melon", "Melon", "Melon", "Melon", "Melon");
-    BigDecimal subTotal = discountRulesEngine.calculatePriceOfDiscountedItems(basketItems, itemRepository);
+    BigDecimal subTotal = discountRulesEngine.calculatePriceOfDiscountedItems(basketItems);
     assertThat(subTotal.doubleValue()).isEqualTo(1.5);
   }
 
   @Test
   void subtotalOfBasketWithMultipleLimes() {
     List<String> basketItems = asList("Lime", "Lime", "Lime", "Lime", "Lime");
-    BigDecimal subTotal = discountRulesEngine.calculatePriceOfDiscountedItems(basketItems, itemRepository);
+    BigDecimal subTotal = discountRulesEngine.calculatePriceOfDiscountedItems(basketItems);
     assertThat(subTotal.doubleValue()).isEqualTo(0.60);
   }
 
@@ -31,11 +31,11 @@ class HansDiscountRulesEngineTest {
     List<String> basketItems = asList("Lime", "Lime", "Lime",
                                       "Lime", "Lime", "Lime",
                                       "Lime", "Lime", "Lime");
-    BigDecimal subTotal = discountRulesEngine.calculatePriceOfDiscountedItems(basketItems, itemRepository);
+    BigDecimal subTotal = discountRulesEngine.calculatePriceOfDiscountedItems(basketItems);
     assertThat(subTotal.doubleValue()).isEqualTo(0.90);
   }
 
   private final ItemPricesRepository itemRepository = new ItemPricesRepositoryStub();
   private final DiscountedItemsRepository discountedItemsRepository = new DiscountedItemsRepositoryStub();
-  private final DiscountRulesEngine discountRulesEngine = new HansDiscountRulesEngine(discountedItemsRepository);
+  private final DiscountRulesEngine discountRulesEngine = new HansDiscountRulesEngine(discountedItemsRepository, itemRepository);
 }
