@@ -22,8 +22,8 @@ public class HanBasket {
     final List<String> discountedItems = discountedItemsRepository.findAll();
     final List<String> discountedItemsInBasket = discountedItemsInBasket(basketItems, discountedItems);
     final BigDecimal discountedItemsTotal = discountRulesEngine.calculatePriceOfDiscountedItems(discountedItemsInBasket);
-
-    return calculateTotalOfBasket(basketItems, discountedItems, discountedItemsTotal);
+    BigDecimal normalItemsTotal = priceOfAllNonDiscountedItems(basketItems, discountedItems);
+    return calculateTotalOfBasket(normalItemsTotal, discountedItemsTotal);
   }
 
   private List<String> discountedItemsInBasket(final List<String> basketItems, final List<String> discountedItems) {
@@ -40,8 +40,8 @@ public class HanBasket {
             .reduce(BigDecimal.ZERO, BigDecimal::add);
   }
 
-  private BigDecimal calculateTotalOfBasket(final List<String> basketItems, final List<String> discountedItems, final BigDecimal discountedItemsTotal) {
-    return priceOfAllNonDiscountedItems(basketItems, discountedItems)
+  private BigDecimal calculateTotalOfBasket(final BigDecimal normalItemsTotal, final BigDecimal discountedItemsTotal) {
+    return normalItemsTotal
             .setScale(2, HALF_EVEN)
             .add(discountedItemsTotal);
   }

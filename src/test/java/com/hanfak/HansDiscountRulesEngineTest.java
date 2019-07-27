@@ -35,6 +35,15 @@ class HansDiscountRulesEngineTest {
     assertThat(subTotal.doubleValue()).isEqualTo(0.90);
   }
 
+  @Test
+  void subtotalOfBasketWithMultipleDifferentItemsWithSameDiscount() {
+    List<String> basketItems = asList("Lime", "Lime", "Lime",
+            "Melon", "Melon",
+            "Nut", "Nut", "Nut");
+    BigDecimal subTotal = discountRulesEngine.calculatePriceOfDiscountedItems(basketItems);
+    assertThat(subTotal.doubleValue()).isEqualTo(3.20);
+  }
+
   private final ItemPricesRepository itemRepository = new ItemPricesRepositoryStub();
   private final DiscountedItemsRepository discountedItemsRepository = new DiscountedItemsRepositoryStub();
   private final DiscountRulesEngine discountRulesEngine = new HansDiscountRulesEngine(discountedItemsRepository, itemRepository);

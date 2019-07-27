@@ -1,7 +1,6 @@
 package com.hanfak;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
 
 public class HansDiscountRulesEngine implements DiscountRulesEngine {
@@ -22,7 +21,8 @@ public class HansDiscountRulesEngine implements DiscountRulesEngine {
   }
 
   private BigDecimal calculateDiscountedTotalForItem(final List<String> basketItems, final String item) {
+    long numberOfDiscountedItem = basketItems.stream().filter(item::equals).count();
     DiscountType discountForItem = discountedItemsRepository.findDiscountForItem(item);
-    return discountForItem.calculateTotal(itemPricesRepository.findPrice(item), basketItems);
+    return discountForItem.calculateTotal(numberOfDiscountedItem, itemPricesRepository.findPrice(item));
   }
 }
