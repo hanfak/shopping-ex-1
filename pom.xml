@@ -248,13 +248,6 @@
             <version>${assertj-core.version}</version>
             <scope>test</scope>
         </dependency>
-        <!--Acceptance testing library-->
-        <dependency>
-            <groupId>com.googlecode.yatspec</groupId>
-            <artifactId>yatspec</artifactId>
-            <version>${yatspec.version}</version>
-            <scope>test</scope>
-        </dependency>
         <!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->
         <dependency>
             <groupId>org.mockito</groupId>
@@ -263,11 +256,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <repositories>
-        <repository>
-            <id>repo.bodar.com</id>
-            <url>http://repo.bodar.com</url>
-        </repository>
-    </repositories>
 </project>

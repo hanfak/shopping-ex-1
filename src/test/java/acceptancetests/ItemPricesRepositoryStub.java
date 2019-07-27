@@ -8,6 +8,7 @@ import java.util.Map;
 public class ItemPricesRepositoryStub implements ItemPricesRepository {
 
   private static final Map<String, Double> ITEM_PRICES = new HashMap<>();
+
   static {
     ITEM_PRICES.put("Apple", 0.35);
     ITEM_PRICES.put("Banana", 0.20);

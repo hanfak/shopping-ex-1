@@ -3,6 +3,7 @@ package com.hanfak;
 
 import acceptancetests.DiscountedItemsRepositoryStub;
 import acceptancetests.ItemPricesRepositoryStub;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -20,21 +21,15 @@ class HanBasketTest {
 
   @Test
   void totalIs0WhenBasketIsEmpty() {
-    when(discountRulesEngine.calculatePriceOfDiscountedItems(emptyList()))
-            .thenReturn(BigDecimal.ZERO);
     assertThat(basket.total(emptyList()).doubleValue()).isEqualTo(0.0);
   }
 
-  // TODO remove??
   @ParameterizedTest
   @CsvSource({
           "Apple, 0.35",
           "Banana, 0.20"
   })
   void totalOfBasketWithOneItem(String item, double value) {
-    when(discountRulesEngine.calculatePriceOfDiscountedItems(emptyList()))
-            .thenReturn(BigDecimal.ZERO);
-
     assertThat(basket.total(singletonList(item)).doubleValue()).isEqualTo(value);
   }
 
@@ -55,18 +50,20 @@ class HanBasketTest {
   }
 
   @Test
-  void totalOfBasketWithMultipleItems() {
-    when(discountRulesEngine.calculatePriceOfDiscountedItems(emptyList()))
-            .thenReturn(BigDecimal.ZERO);
+  void totalOfBasketWithMultipleNonDiscountedItems() {
     assertThat(basket.total(asList("Apple", "Banana")).doubleValue()).isEqualTo(0.55);
   }
 
   @Test
-  void totalOfBasketWithMultipleAndDuplicateItems() {
-    when(discountRulesEngine.calculatePriceOfDiscountedItems(emptyList()))
-            .thenReturn(BigDecimal.ZERO);
+  void totalOfBasketWithMultipleAndDuplicateNonDiscountedItems() {
     assertThat(basket.total(asList("Apple", "Apple", "Banana")).doubleValue())
             .isEqualTo(0.90);
+  }
+
+  @BeforeEach
+  void setUp() {
+    when(discountRulesEngine.calculatePriceOfDiscountedItems(emptyList()))
+            .thenReturn(BigDecimal.ZERO);
   }
 
   private final ItemPricesRepository repository = new ItemPricesRepositoryStub();

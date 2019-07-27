@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static com.hanfak.DiscountType.DISCOUNT_1;
 import static com.hanfak.DiscountType.DISCOUNT_2;
@@ -23,12 +22,12 @@ public class DiscountedItemsRepositoryStub implements DiscountedItemsRepository 
   }
 
   @Override
-  public List<String> findAll() {
+  public List<String> findAllItems() {
     return new ArrayList<>(ITEM_PRICES.keySet());
   }
 
   @Override
-  public DiscountType findDiscountForItem(String item) {
+  public DiscountType findDiscountTypeForItem(String item) {
     return ITEM_PRICES.get(item);
   }
 }

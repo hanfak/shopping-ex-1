@@ -2,6 +2,8 @@ package com.hanfak;
 
 import java.math.BigDecimal;
 
+import static java.lang.Math.floor;
+
 public enum DiscountType {
   //Buy one get one free
   DISCOUNT_1 {
@@ -20,7 +22,7 @@ public enum DiscountType {
     @Override
     public BigDecimal calculateTotal(long numberOfDiscountedItem, double value) {
       BigDecimal price = BigDecimal.valueOf(value);
-      double numberOf3LotsOfItems = Math.floor(numberOfDiscountedItem / 3.0);
+      double numberOf3LotsOfItems = floor(numberOfDiscountedItem / 3.0);
       double leftOver = numberOfDiscountedItem % 3;
       double numberOfDiscountedItemsToPayFor = numberOf3LotsOfItems * 2 + leftOver;
 

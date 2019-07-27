@@ -44,7 +44,6 @@ class CalculateBasketTotal {
     }
   }
 
-
   private void whenProcessingTheFollowingItems(String... fruits) {
     List<String> basketItems = new ArrayList<>(Arrays.asList(fruits));
     actualTotal = basket.total(basketItems);

@@ -17,3 +17,13 @@ Given a list of shopping, calculate the total cost of those items
 
 
 Use maven version 3.6.0
+
+## To execute
+
+- run ```mvn clean verify```
+    - This will run the tests as well as static analysis tools (pmd, findbugs, jacoco)
+    
+## Notes
+
+- I have used test stubs to replicate a datasource for the item prices and item discounts, this is used for the tests. I did not use a database, as this could be implemented later.
+-

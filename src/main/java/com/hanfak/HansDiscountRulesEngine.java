@@ -15,14 +15,17 @@ public class HansDiscountRulesEngine implements DiscountRulesEngine {
 
   @Override
   public BigDecimal calculatePriceOfDiscountedItems(final List<String> basketItems) {
-   return discountedItemsRepository.findAll().stream()
+   return discountedItemsRepository.findAllItems().stream()
            .map(item -> calculateDiscountedTotalForItem(basketItems, item))
            .reduce(BigDecimal.ZERO, BigDecimal::add);
   }
 
   private BigDecimal calculateDiscountedTotalForItem(final List<String> basketItems, final String item) {
-    long numberOfDiscountedItem = basketItems.stream().filter(item::equals).count();
-    DiscountType discountForItem = discountedItemsRepository.findDiscountForItem(item);
-    return discountForItem.calculateTotal(numberOfDiscountedItem, itemPricesRepository.findPrice(item));
+    DiscountType discountForItem = discountedItemsRepository.findDiscountTypeForItem(item);
+    return discountForItem.calculateTotal(numberOfDiscountedItems(basketItems, item), itemPricesRepository.findPrice(item));
+  }
+
+  private long numberOfDiscountedItems(List<String> basketItems, String item) {
+    return basketItems.stream().filter(item::equals).count();
   }
 }

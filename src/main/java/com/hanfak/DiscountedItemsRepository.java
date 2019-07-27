@@ -3,7 +3,7 @@ package com.hanfak;
 import java.util.List;
 
 public interface DiscountedItemsRepository {
-  List<String> findAll();
+  List<String> findAllItems();
 
-  DiscountType findDiscountForItem(String item);
+  DiscountType findDiscountTypeForItem(String item);
 }
